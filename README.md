@@ -16,6 +16,8 @@ curl 'https://live-cisa-cybersecurity-vulnerabilities-kev.p.rapidapi.com/api/vul
 
 Full examples: [Python](examples/python/quickstart.py) · [JavaScript](examples/javascript/quickstart.js) · [curl](examples/curl.sh)
 
+Responses default to the 50 most recent entries. Add `limit=2000` to get the entire catalog in one call.
+
 ---
 
 ## Endpoint Reference
