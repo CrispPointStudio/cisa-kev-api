@@ -93,13 +93,13 @@ A JSON array of vulnerability objects, newest first.
 
 ## Pricing
 
-All plans are billed through RapidAPI. Request quotas and rate limits for each plan are shown on the [listing's pricing tab](https://rapidapi.com/crisp-point-studio-crisp-point-studio-default/api/live-cisa-cybersecurity-vulnerabilities-kev/pricing).
+All plans are billed through RapidAPI. Full details on the [pricing tab](https://rapidapi.com/crisp-point-studio-crisp-point-studio-default/api/live-cisa-cybersecurity-vulnerabilities-kev/pricing).
 
-| Plan | Price | Intended for |
-| :--- | :--- | :--- |
-| Basic | Free | Evaluation, personal projects, low-volume checks |
-| Pro | $9.99 / month | Production monitoring and dashboards |
-| Ultra | $29.99 / month | High-volume scanning and multi-tenant tools |
+| Plan | Price | Requests / month | Rate limit |
+| :--- | :--- | :--- | :--- |
+| Basic | Free | 100 | 1,000 per hour |
+| Pro | $9.99 / month | 10,000 | — |
+| Ultra | $29.99 / month | 50,000 | — |
 
 ---
 
