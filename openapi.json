@@ -1,0 +1,190 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CISA Known Exploited Vulnerabilities (KEV) API",
+    "description": "JSON REST API for the US Government CISA catalog of Known Exploited Vulnerabilities. Query actively exploited CVEs, filter by vendor, and power threat-intelligence dashboards, vulnerability scanners, and automated patch-priority alerts. Available on RapidAPI: https://rapidapi.com/crisp-point-studio-crisp-point-studio-default/api/live-cisa-cybersecurity-vulnerabilities-kev",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Crisp Point Studio",
+      "url": "https://rapidapi.com/crisp-point-studio-crisp-point-studio-default/api/live-cisa-cybersecurity-vulnerabilities-kev"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://live-cisa-cybersecurity-vulnerabilities-kev.p.rapidapi.com",
+      "description": "RapidAPI"
+    }
+  ],
+  "security": [
+    {
+      "RapidAPIKey": [],
+      "RapidAPIHost": []
+    }
+  ],
+  "paths": {
+    "/api/vulnerabilities": {
+      "get": {
+        "operationId": "getVulnerabilities",
+        "summary": "List actively exploited vulnerabilities",
+        "description": "Returns the most recently added vulnerabilities from the CISA KEV catalog, newest first. Defaults to 50 entries; raise `limit` to get more. Pass `vendor` to restrict results to one vendor or project.",
+        "parameters": [
+          {
+            "name": "vendor",
+            "in": "query",
+            "required": false,
+            "description": "Case-insensitive vendor/project filter, e.g. `Microsoft`, `Cisco`, `Apple`.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Microsoft"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of entries to return, newest first. The full catalog is currently under 2000 entries.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2000,
+              "default": 50
+            },
+            "example": 100
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of KEV entries, newest first, at most `limit` items.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Vulnerability"
+                  }
+                },
+                "example": [
+                  {
+                    "cveID": "CVE-2026-65660",
+                    "vendorProject": "Microsoft",
+                    "product": "SharePoint",
+                    "vulnerabilityName": "Microsoft SharePoint Code Injection Vulnerability",
+                    "dateAdded": "2026-09-25",
+                    "shortDescription": "Microsoft SharePoint contains a code injection vulnerability which could allow an authorized attacker to execute code over a network.",
+                    "requiredAction": "Apply mitigations in accordance with vendor instructions, ensuring compliance with CISA's BOD 26-04 Prioritizing Security Updates Based on Risk (see URL in Notes) guidance and CISA's \"Forensics Triage Requirements\" (see URL in Notes). Follow applicable BOD 26-04 guidance for cloud services or discontinue use of the product if mitigations are unavailable. Stakeholders are responsible for evaluating each asset's internet exposure and ensuring adherence to BOD 26-04 patching guidelines.",
+                    "dueDate": "2026-09-28",
+                    "knownRansomwareCampaignUse": "Unknown",
+                    "forensicTriage": "Yes",
+                    "notes": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-65660 ; ; BOD 26-04: https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk ; Forensics Triage Requirements: https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk ; https://nvd.nist.gov/vuln/detail/CVE-2026-65660",
+                    "cwes": ["CWE-94"]
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid RapidAPI key."
+          },
+          "422": {
+            "description": "Invalid query parameter, e.g. `limit` outside 1–2000."
+          },
+          "429": {
+            "description": "Plan quota or rate limit exceeded."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "RapidAPIKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-RapidAPI-Key"
+      },
+      "RapidAPIHost": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-RapidAPI-Host"
+      }
+    },
+    "schemas": {
+      "Vulnerability": {
+        "type": "object",
+        "required": [
+          "cveID",
+          "vendorProject",
+          "product",
+          "vulnerabilityName",
+          "dateAdded",
+          "shortDescription",
+          "requiredAction",
+          "dueDate",
+          "knownRansomwareCampaignUse",
+          "forensicTriage",
+          "notes",
+          "cwes"
+        ],
+        "properties": {
+          "cveID": {
+            "type": "string",
+            "description": "CVE identifier.",
+            "example": "CVE-2026-65660"
+          },
+          "vendorProject": {
+            "type": "string",
+            "description": "Vendor or project name.",
+            "example": "Microsoft"
+          },
+          "product": {
+            "type": "string",
+            "description": "Affected product.",
+            "example": "SharePoint"
+          },
+          "vulnerabilityName": {
+            "type": "string",
+            "description": "CISA's name for the vulnerability."
+          },
+          "dateAdded": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the entry was added to the KEV catalog."
+          },
+          "shortDescription": {
+            "type": "string"
+          },
+          "requiredAction": {
+            "type": "string",
+            "description": "CISA's required remediation."
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date",
+            "description": "BOD 26-04 remediation deadline for federal agencies."
+          },
+          "knownRansomwareCampaignUse": {
+            "type": "string",
+            "enum": ["Known", "Unknown"]
+          },
+          "forensicTriage": {
+            "type": "string",
+            "enum": ["Yes", "No"],
+            "description": "Whether CISA's forensic triage requirements apply."
+          },
+          "notes": {
+            "type": "string",
+            "description": "Semicolon-separated reference URLs."
+          },
+          "cwes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "CWE identifiers; may be empty.",
+            "example": ["CWE-94"]
+          }
+        }
+      }
+    }
+  }
+}
